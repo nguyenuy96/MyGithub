@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>FirstProject</title>
+  <base href="/">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    .gridbutton {
+      display: grid;
+      grid-template-columns: 40px 40px 40px 40px;
+      column-gap: 1%;
+      row-gap: 8px;
+    }
+
+    #calculationChain {
+      width: 100%;
+      grid-column-start: 1;
+      grid-column-end: 5;
+      grid-row-start: 3;
+      grid-row-end: 6;
+    }
+
+    #inputField {
+      width: 100%;
+      grid-column-start: 1;
+      grid-column-end: 5;
+      grid-row-start: 1;
+      grid-row-end: 3;
+    }
+  </style>
+  <script>
+    var tempNumber = ""; // a temp number to push into numbersArry array when onclick caculation
+
+    var numbersArray = []; //an Array to contain temp number
+
+    var tempCalculation = ""; // a temp calculation to push into calculationsArry array when onclick number
+
+    var calculationsArray = [];//an Array  contains temp calculation
+    var calcuChain = [];// array contains numbers and calculations
+    var calChain = "";
+    /*get value of number when onlick number*/
+    function valueOfNumber(inputNumber) {
+      tempNumber += inputNumber;// temp number is a chain of number increase when onclick number
+      document.getElementById('inputField').value = tempNumber;//display temp number on input
+    }
+    /*Add calculation into calculationsArray array*/
+    function pushCalculationIntoArray() {
+      calculationsArray.push(tempCalculation);// take the addition action
+      numbersArray.push(tempNumber);// push temp number into numbersArray array 
+      calcuChain.push(tempNumber);//push tempNumber into calcuChain array
+      switch (tempCalculation) {
+        case "add"://if temp calculation is addition
+          calcuChain.push('+');//add "+" into calcuChain arry
+          break;
+        case "sub"://if temp calculation is subtraction
+          calcuChain.push('-');//add "-" into calcuChain array
+          break;
+        case "mul"://if temp calculation is multiplication
+          calcuChain.push('*');//add "*" into calcuChain array
+          break;
+        case "div"://if temp calculation is division
+          calcuChain.push('/');// add "/" into calcuChain array
+          break;
+      }
+    }
+    /*active the calculation*/
+    function activeCaculation(inputCalculation) {
+      this.tempCalculation = inputCalculation;
+
+      if (tempNumber == "") {//start of caculation
+        if (numbersArray.length > 0) {
+          calculationsArray.splice(calculationsArray.length - 1, 2, inputCalculation);
+          switch (tempCalculation) {
+            case "add"://if temp calculation is addition
+              calcuChain.splice(calcuChain.length - 1, 2, '+');
+              break;
+            case "sub"://if temp calculation is subtraction
+              calcuChain.splice(calcuChain.length - 1, 2, '-');
+              break;
+            case "mul"://if temp calculation is multiplication
+              calcuChain.splice(calcuChain.length - 1, 2, '*');
+              break;
+            case "div"://if temp calculation is division
+              calcuChain.splice(calcuChain.length - 1, 2, '/');
+              break;
+          }
+        }
+        document.getElementById('calculationChain').innerHTML = calcuChain.join('');
+      } else {
+        pushCalculationIntoArray();
+        document.getElementById('calculationChain').innerHTML = calcuChain.join('');
+        takeCalculations();
+        tempNumber = "";
+      }
+    }
+    function equalResult(equal) {
+      //  if (numbersArray.length > 0) {
+      //   numbersArray.push(tempNumber);
+      //   takeCalculations();
+      //   numbersArray.splice(0, numbersArray.length, tempResult);
+      //   calculationsArray = [];
+      //   calcuChain.splice(0, calcuChain.length, tempResult);
+      //   document.getElementById('calculationChain').innerHTML = calcuChain.join('');
+      //   tempNumber = "";
+      // }else{
+      // }
+
+    }
+
+    var tempResult = "";
+    var currentIndex = 0;// current index of calculationsArray and numbersArray array
+    /*take Caculations*/
+    function takeCalculations() {
+      if (numbersArray.length < 2 && calculationsArray.length < 2) {
+        tempResult = numbersArray[0];
+      } else {
+        for (i = currentIndex; i < numbersArray.length; i++) {//start the loop at the current Index of calculationsArray and numbersArray array
+          for (j = i; j < numbersArray.length - 1; j++) {
+            switch (calculationsArray[j]) {
+              case "add":
+                tempResult = parseFloat(tempResult) + parseFloat(numbersArray[i + 1]);//take the addition calculation
+                break;
+              case "sub":
+                tempResult = parseFloat(tempResult) - parseFloat(numbersArray[i + 1]);//take the subtraction calculation
+                break;
+              case "mul":
+                tempResult = parseFloat(tempResult) * parseFloat(numbersArray[i + 1]);//take the multiplicatioon calculation
+                break;
+              case "div":
+                tempResult = parseFloat(tempResult) / parseFloat(numbersArray[i + 1]);//take the division calculation
+                break;
+            }
+          }
+          currentIndex = numbersArray.length - 1;//change the current index of calculationsArray and numbersArray array
+          document.getElementById('inputField').value = tempResult;//display temp result on input
+        }
+      }
+    }
+
+    /*display the value of temp number on input*/
+
+  </script>
+</head>
+
+<body>
+  <!--The content below is only a placeholder and can be replaced.-->
+  <app-root></app-root>
+
+  <div>
+    <div class="gridbutton" style="margin: 0.5%">
+      <p id="calculationChain"></p>
+      <input id="inputField">
+      <button class="btn btn-primary" onclick="displayValueOfInputNumber()">C</button>
+      <button class="btn btn-primary" onclick="">&#8592;</button>
+      <button class="btn btn-primary">x
+        <sup>2</sup>
+      </button>
+      <button class="btn btn-primary" onclick="">&#8730;</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(1)">1</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(2)">2</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(3)">3</button>
+      <button class="btn btn-primary" onclick="activeCaculation('add')">+</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(4)">4</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(5)">5</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(6)">6</button>
+      <button class="btn btn-primary" onclick="activeCaculation('sub')">-</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(7)">7</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(8)">8</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(9)">9</button>
+      <button class="btn btn-primary" onclick="activeCaculation('mul')">x</button>
+      <button class="btn btn-primary" onclick="valueOfNumber(0)">0</button>
+      <button class="btn btn-primary" onclick="">.</button>
+      <button class="btn btn-primary" onclick="equalResult('equal')">=</button>
+      <button class="btn btn-primary" onclick="activeCaculation('div')">/</button>
+    </div>
+  </div>
+</body>
+
+</html>
