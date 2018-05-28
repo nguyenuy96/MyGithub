@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+.gridbutton {
+    display: grid;
+    grid-template-columns: 50px 50px 50px 50px 50px;
+    column-gap: 1%;
+    row-gap: 8px;
+  }
+
+  #calculationChain {
+    width: 100%;
+    grid-column-start: 1;
+    grid-column-end: 6;
+    grid-row-start: 3;
+    grid-row-end: 6;
+  }
+
+  #inputField {
+    width: 100%;
+    grid-column-start: 1;
+    grid-column-end: 6;
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+  #equal{
+    grid-column-start: 2;
+    grid-column-end: 6;
+  }
